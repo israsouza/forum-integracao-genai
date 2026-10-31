@@ -1,0 +1,15 @@
+id,descricao,payload_json,status_esperado,servico_origem_do_erro
+D01,pedido simples,"{""customer_id"":""c1"",""items"":[{""sku"":""A1"",""qty"":1}],""payment_method"":""CARD""}",201,-
+D02,varios itens,"{""customer_id"":""c2"",""items"":[{""sku"":""A1"",""qty"":2},{""sku"":""B2"",""qty"":5}],""payment_method"":""PIX""}",201,-
+D03,valor alto,"{""customer_id"":""c3"",""items"":[{""sku"":""TV9"",""qty"":50}],""payment_method"":""CARD""}",201,-
+D04,qty zero,"{""customer_id"":""c1"",""items"":[{""sku"":""A1"",""qty"":0}],""payment_method"":""CARD""}",400,pedidos
+D05,qty negativa,"{""customer_id"":""c1"",""items"":[{""sku"":""A1"",""qty"":-1}],""payment_method"":""CARD""}",400,pedidos
+D06,qty enorme,"{""customer_id"":""c1"",""items"":[{""sku"":""A1"",""qty"":999999}],""payment_method"":""CARD""}",409,pedidos
+D07,sem itens,"{""customer_id"":""c1"",""items"":[],""payment_method"":""CARD""}",400,pedidos
+D08,metodo invalido,"{""customer_id"":""c1"",""items"":[{""sku"":""A1"",""qty"":1}],""payment_method"":""FIADO""}",400,pedidos
+D09,injecao sql no customer_id,"{""customer_id"":""'; DROP TABLE orders;--"",""items"":[{""sku"":""A1"",""qty"":1}],""payment_method"":""CARD""}",400,pedidos
+D10,unicode no customer_id,"{""customer_id"":""josé-日本"",""items"":[{""sku"":""A1"",""qty"":1}],""payment_method"":""CARD""}",201,-
+D11,gateway devolve sem status,"{""mock_payment_response"":{}}",502,pagamentos
+D12,gateway status desconhecido,"{""mock_payment_response"":{""status"":""PENDING_REVIEW""}}",502,pagamentos
+D13,gateway 500 com HTML,"{""mock_payment_http"":500}",502,pagamentos
+D14,gateway timeout,"{""mock_payment_delay_s"":30}",504,pagamentos
